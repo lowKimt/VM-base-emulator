@@ -14,28 +14,28 @@ end
 
 function VM:reset()
     -- self.Stack = {} -- Unused for now; Do not Delete!
-    self.Memory = {}
+    self.Memory = {}   -- I'll find something to do with this, eventually.
+    self.Memory.Registers = {}
 end
 
 VM.Handlers = {
-    -- self.Memory[0] is a placeholder, I will change this to be more flexible.
-    [0x01] = function(self, arg)
-        self.Memory[0] = arg
+    [0x01] = function(self, registerIndex, arg)
+        self.Memory.Registers[registerIndex] = arg
     end,
-    [0x02] = function(self)
-        self.Memory[0] = 0
+    [0x02] = function(self, registerIndex)
+        self.Memory.Registers[registerIndex] = 0
     end,
-    [0x03] = function(self)
-        print(tostring(self.Memory[0]))
+    [0x03] = function(self, registerIndex)
+        print(tostring(self.Memory.Registers[registerIndex]))
     end
 }
 
-function VM:exec(command, arg)
+function VM:exec(command, registerIndex, arg)
     local handler = self.Handlers[command]
     if not handler then
         print("Command does not exist: " .. tostring(command))
         return -- add return
     end
-    handler(self, arg)
+    handler(self, registerIndex, arg)
 end
 return VM
