@@ -11,7 +11,7 @@ A lightweight stack-based virtual machine implemented in Lua. This VM provides b
 ## Installation
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/lua-vm.git
+git clone https://github.com/lowKimt/VM-base-emulator.git
 ```
 2. Require the VM module in your Lua code:
 ```lua
