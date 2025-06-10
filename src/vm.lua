@@ -33,7 +33,6 @@ function VM:exec(command, registerIndex, arg)
     local handler = self.Handlers[command]
     if not handler then
         error("Command does not exist: " .. tostring(command)) -- Proper error return
-        return
     end
     handler(self, registerIndex, arg)
 end
