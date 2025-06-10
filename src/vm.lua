@@ -1,10 +1,10 @@
 local VM = {}
 
-VM.COMMANDS = {0x01, 0x02, 0x03}
-
--- 0x01 PUSH
--- 0x02 POP
--- 0x03 PRINT/LOG
+VM.COMMANDS = {
+    OPCODE_PUSH = 0x01,
+    OPCODE_POP  = 0x02,
+    OPCODE_LOG  = 0x03
+}   -- Changes: Replace single numbers with named Opcode(s)
 
 function VM:new()
     local vm = setmetatable({}, {__index = self})
@@ -13,18 +13,18 @@ function VM:new()
 end
 
 function VM:reset()
-    self.Memory = {}   -- I'll find something to do with this, eventually.
+    self.Memory = {}
     self.Memory.Registers = {}
 end
 
 VM.Handlers = {
-    [0x01] = function(self, registerIndex, arg)
+    [VM.COMMANDS.OPCODE_PUSH] = function(self, registerIndex, arg)
         self.Memory.Registers[registerIndex] = arg
     end,
-    [0x02] = function(self, registerIndex)
+    [VM.COMMANDS.OPCODE_POP] = function(self, registerIndex)
         self.Memory.Registers[registerIndex] = 0
     end,
-    [0x03] = function(self, registerIndex)
+    [VM.COMMANDS.OPCODE_LOG] = function(self, registerIndex)
         print(tostring(self.Memory.Registers[registerIndex]))
     end
 }
@@ -32,9 +32,10 @@ VM.Handlers = {
 function VM:exec(command, registerIndex, arg)
     local handler = self.Handlers[command]
     if not handler then
-        print("Command does not exist: " .. tostring(command))
-        return -- add return
+        error("Command does not exist: " .. tostring(command)) -- Proper error return
+        return
     end
     handler(self, registerIndex, arg)
 end
+
 return VM
