@@ -13,7 +13,6 @@ function VM:new()
 end
 
 function VM:reset()
-    -- self.Stack = {} -- Unused for now; Do not Delete!
     self.Memory = {}   -- I'll find something to do with this, eventually.
     self.Memory.Registers = {}
 end
